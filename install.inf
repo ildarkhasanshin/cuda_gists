@@ -1,0 +1,15 @@
+[info]
+title=GitHub Gist
+desc=Get snippets from GitHub Gist
+type=cudatext-plugin
+subdir=cuda_gists
+
+[item1]
+section=commands
+caption=GitHub Gist\Get list
+method=get_gists
+
+[item2]
+section=commands
+caption=GitHub Gist\Change username
+method=change_username
