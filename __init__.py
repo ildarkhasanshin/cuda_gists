@@ -1,7 +1,7 @@
 import os
+from os import path
 from cudatext import *
 import cudatext_cmd as cmds
-from .pathlib import Path, PurePosixPath
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
 from json import load
@@ -10,13 +10,13 @@ import tempfile
 
 class Command:
     def get_conf_file(self):
-        return Path(app_path(APP_DIR_SETTINGS)) / 'cuda_gists.json'
+        return os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_gists.json')
 
     def load_username(self):
         self.conf_file = self.get_conf_file()
         data_load_ = False
-        if self.conf_file.exists():
-            with self.conf_file.open(encoding='utf-8') as fin:
+        if path.exists(self.conf_file):
+            with open(self.conf_file, mode='r', encoding='utf-8') as fin:
                 data_load_ = json.load(fin)['username']
 
         return data_load_
@@ -24,7 +24,7 @@ class Command:
     def save_username(self, username_):
         self.conf_file = self.get_conf_file()
         data_ = {'username': username_}
-        with self.conf_file.open(mode='w', encoding='utf-8') as fout:
+        with open(self.conf_file, mode='w', encoding='utf-8') as fout:
             json.dump(data_, fout, indent=2)
 
     def load_gists(self, username_):
