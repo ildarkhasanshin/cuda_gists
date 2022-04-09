@@ -1,4 +1,5 @@
 Plugin for CudaText
+
 Get snippets from GitHub Gist
 
 Plugin gives few commands in the menu "Plugins / GitHub Gist":
