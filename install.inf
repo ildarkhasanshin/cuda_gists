@@ -3,6 +3,7 @@ title=GitHub Gist
 desc=Get snippets from GitHub Gist
 type=cudatext-plugin
 subdir=cuda_gists
+homepage=https://github.com/ildarkhasanshin/cuda_gists/
 
 [item1]
 section=commands
