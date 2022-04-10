@@ -58,7 +58,7 @@ class Command:
             if response:
                 gists = load(response)
                 for i in gists:
-                    desc_ = i['description'] if i['description'] else list(i['files'])[0]
+                    desc_ = i['description'].replace('\n', '') if i['description'] else list(i['files'])[0]
                     preview_ = ', '.join(list(i['files']))
                     data_.append({'desc': desc_, 'preview': preview_, 'url': i['url']})
                 if len(gists) == 100:
