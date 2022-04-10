@@ -8,7 +8,17 @@ from json import load
 import json
 import tempfile
 
+PATH = tempfile.gettempdir() + os.sep + 'cudatext_gists'
+
 class Command:
+    def __init__(self):
+        if (os.path.exists(PATH) == False):
+            try:
+                os.mkdir(PATH)
+            except OSError as err:
+                msg_box("OS error: {0}".format(err), MB_OK)
+                raise
+
     def get_conf_file(self):
         return os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_gists.json')
 
@@ -74,7 +84,7 @@ class Command:
                 for i in files_:
                     file_ = load(urlopen(data_[res]['url']))['files'][i]['raw_url']
                     file_content_ = urlopen(file_).read().decode('utf-8')
-                    tempfile_ = tempfile.gettempdir() + os.sep + i
+                    tempfile_ = PATH + os.sep + i
                     open(tempfile_, 'w')
                     file_open(tempfile_)
                     ed.set_text_all(file_content_)
