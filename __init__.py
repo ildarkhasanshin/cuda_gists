@@ -47,12 +47,12 @@ class Command:
             try:
                 response = urlopen(req)
             except HTTPError as e:
-                error = 'Error code: ' + str(e.code)
+                error = 'error code - ' + str(e.code)
             except URLError as e:
-                error = 'Reason: ' + str(e.reason)
+                error = 'reason - ' + str(e.reason)
 
             if error:
-                msg_box(error, MB_OK)
+                msg_box('GitHub Gist: ' + error, MB_OK+MB_ICONERROR)
                 return
 
             if response:
@@ -64,7 +64,7 @@ class Command:
                 if len(gists) == 100:
                     ii = ii + 1
             else:
-                msg_box('Empty response!', MB_OK)
+                msg_box('GitHub Gist: empty responce', MB_OK+MB_ICONWARNING)
                 return
 
         descs_ = ''
@@ -90,7 +90,7 @@ class Command:
                     ed.set_text_all(file_content_)
                     ed.save()
         else:
-            msg_box('No gists found for username "' + username_ + '"!', MB_OK)
+            msg_box('GitHub Gist: no gists found for username "' + username_ + '"!', MB_OK+MB_ICONWARNING)
             return
 
         return data_
