@@ -19,6 +19,16 @@ class Command:
                 msg_box("OS error: {0}".format(err), MB_OK)
                 raise
 
+    def get_w_h(self):
+        w_ = 600
+        h_ = 600
+        screen_sizes = app_proc(PROC_COORD_MONITOR, 0)
+        if screen_sizes:
+            w_ = round(screen_sizes[2] / 2)
+            h_ = round(screen_sizes[3] / 3)
+
+        return w_, h_
+
     def get_conf_file(self):
         return os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_gists.json')
 
@@ -78,7 +88,7 @@ class Command:
                 descs_ = descs_ + '\n'
 
         if (len(descs_) > 0):
-            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, 'List of gists', CLIP_RIGHT)
+            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, 'List of gists', CLIP_RIGHT, self.get_w_h()[0], self.get_w_h()[1])
             if (res != None):
                 files_ = list(load(urlopen(data_[res]['url']))['files'])
                 for i in files_:

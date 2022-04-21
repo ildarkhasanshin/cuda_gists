@@ -1,2 +1,5 @@
+2022.04.21
+dynamic window of results
+
 2022.04.09
 initial
