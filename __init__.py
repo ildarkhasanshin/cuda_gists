@@ -23,8 +23,7 @@ class Command:
                 raise
         self.conf_file = ""
 
-    @staticmethod
-    def get_conf_file():
+    def get_conf_file(self):
         return os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_gists.json')
 
     def load_username(self):
@@ -42,8 +41,7 @@ class Command:
         with open(self.conf_file, mode='w', encoding='utf-8') as fout:
             json.dump(data_, fout, indent=2)
 
-    @staticmethod
-    def load_gists(username_):
+    def load_gists(self, username_):
         response = None
         data_ = []
         ii = 2
