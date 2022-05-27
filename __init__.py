@@ -95,9 +95,10 @@ class Command:
             w, h = self.get_w_h()
             res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), clip=CLIP_RIGHT, w=w, h=h)
             if res is not None:
-                files_ = list(load(urlopen(data_[res]['url']))['files'])
+                data_dict = load(urlopen(data_[res]['url']))['files']
+                files_ = list(data_dict)
                 for i in files_:
-                    file_ = load(urlopen(data_[res]['url']))['files'][i]['raw_url']
+                    file_ = data_dict[i]['raw_url']
                     file_content_ = urlopen(file_).read().decode('utf-8')
                     tempfile_ = PATH + os.sep + i
                     open(tempfile_, 'w')
