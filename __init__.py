@@ -93,7 +93,7 @@ class Command:
 
         if len(descs_) > 0:
             w, h = self.get_w_h()
-            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), CLIP_RIGHT, w, h)
+            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), clip=CLIP_RIGHT, w=w, h=h)
             if res is not None:
                 files_ = list(load(urlopen(data_[res]['url']))['files'])
                 for i in files_:
