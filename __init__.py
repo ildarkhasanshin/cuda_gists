@@ -8,18 +8,23 @@ from json import load
 import json
 import tempfile
 
+from cudax_lib import get_translation
+_ = get_translation(__file__)  # I18N
+
 PATH = tempfile.gettempdir() + os.sep + 'cudatext_gists'
 
 class Command:
     def __init__(self):
-        if (os.path.exists(PATH) == False):
+        if os.path.exists(PATH) is False:
             try:
                 os.mkdir(PATH)
             except OSError as err:
                 msg_box("OS error: {0}".format(err), MB_OK)
                 raise
+        self.conf_file = ""
 
-    def get_conf_file(self):
+    @staticmethod
+    def get_conf_file():
         return os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_gists.json')
 
     def load_username(self):
@@ -37,8 +42,9 @@ class Command:
         with open(self.conf_file, mode='w', encoding='utf-8') as fout:
             json.dump(data_, fout, indent=2)
 
-    def load_gists(self, username_):
-        response = gists = False
+    @staticmethod
+    def load_gists(username_):
+        response = None
         data_ = []
         ii = 2
         for i in range(1, ii):
@@ -52,7 +58,7 @@ class Command:
                 error = 'reason - ' + str(e.reason)
 
             if error:
-                msg_box('GitHub Gist: ' + error, MB_OK+MB_ICONERROR)
+                msg_box(_('GitHub Gist: {}').format(error), MB_OK+MB_ICONERROR)
                 return
 
             if response:
@@ -64,7 +70,7 @@ class Command:
                 if len(gists) == 100:
                     ii = ii + 1
             else:
-                msg_box('GitHub Gist: empty responce', MB_OK+MB_ICONWARNING)
+                msg_box(_('GitHub Gist: empty response'), MB_OK+MB_ICONWARNING)
                 return
 
         descs_ = ''
@@ -72,14 +78,14 @@ class Command:
             for i in data_:
                 for k, v in i.items():
                     if k == 'desc':
-                        descs_ = descs_ + v
+                        descs_ += v
                     if k == 'preview':
-                        descs_ = descs_ + '\t' + v
-                descs_ = descs_ + '\n'
+                        descs_ += '\t' + v
+                descs_ += '\n'
 
-        if (len(descs_) > 0):
-            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, 'List of gists', CLIP_RIGHT)
-            if (res != None):
+        if len(descs_) > 0:
+            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), CLIP_RIGHT)
+            if res is not None:
                 files_ = list(load(urlopen(data_[res]['url']))['files'])
                 for i in files_:
                     file_ = load(urlopen(data_[res]['url']))['files'][i]['raw_url']
@@ -90,7 +96,7 @@ class Command:
                     ed.set_text_all(file_content_)
                     ed.save()
         else:
-            msg_box('GitHub Gist: no gists found for username "' + username_ + '"!', MB_OK+MB_ICONWARNING)
+            msg_box(_('GitHub Gist: no gists found for username "{}"!').format(username_), MB_OK)
             return
 
         return data_
@@ -103,7 +109,7 @@ class Command:
             self.load_gists(get_username_)
 
     def change_username(self):
-        username_ = dlg_input('Enter username on gist.github.com', '')
+        username_ = dlg_input(_('Enter username on gist.github.com'), '')
         if username_:
             self.save_username(username_)
             self.load_gists(username_)
