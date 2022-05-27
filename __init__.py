@@ -1,12 +1,11 @@
 import os
+import json
+import tempfile
 from os import path
 from cudatext import *
 import cudatext_cmd as cmds
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
-from json import load
-import json
-import tempfile
 
 from cudax_lib import get_translation
 _ = get_translation(__file__)  # I18N
@@ -70,7 +69,7 @@ class Command:
                 return
 
             if response:
-                gists = load(response)
+                gists = json.load(response)
                 for i in gists:
                     desc_ = i['description'].replace('\n', ' ') if i['description'] else list(i['files'])[0]
                     preview_ = ', '.join(list(i['files']))
@@ -95,7 +94,7 @@ class Command:
             w, h = self.get_w_h()
             res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), clip=CLIP_RIGHT, w=w, h=h)
             if res is not None:
-                data_dict = load(urlopen(data_[res]['url']))['files']
+                data_dict = json.load(urlopen(data_[res]['url']))['files']
                 files_ = list(data_dict)
                 for i in files_:
                     file_ = data_dict[i]['raw_url']
