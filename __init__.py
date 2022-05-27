@@ -23,6 +23,16 @@ class Command:
                 raise
         self.conf_file = ""
 
+    def get_w_h(self):
+        w_ = 600
+        h_ = 600
+        r = app_proc(PROC_COORD_MONITOR, 0)
+        if r:
+            w_ = (r[2]-r[0]) // 2
+            h_ = (r[3]-r[1]) // 3
+
+        return w_, h_
+
     def get_conf_file(self):
         return os.path.join(app_path(APP_DIR_SETTINGS), 'cuda_gists.json')
 
@@ -82,7 +92,7 @@ class Command:
                 descs_ += '\n'
 
         if len(descs_) > 0:
-            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), CLIP_RIGHT)
+            res = dlg_menu(DMENU_LIST_ALT, descs_, 0, _('List of gists'), CLIP_RIGHT, self.get_w_h()[0], self.get_w_h()[1])
             if res is not None:
                 files_ = list(load(urlopen(data_[res]['url']))['files'])
                 for i in files_:
